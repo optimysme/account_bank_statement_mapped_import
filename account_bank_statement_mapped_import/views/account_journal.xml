@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="journal_dashboard_view_inherit" model="ir.ui.view">
+        <field name="name">account.journal.dashboard.kanban.csv.inherit</field>
+        <field name="model">account.journal</field>
+        <field name="inherit_id" ref="account.account_journal_dashboard_kanban_view"/>
+        <field name="arch" type="xml">
+            <xpath expr='//span[@name="button_import_placeholder"]' position='inside'>
+                <span>or <a type="object" name="import_mapped_csv_statement">Import Mapped CSV</a></span>
+            </xpath>
+            <xpath expr='//div[@name="bank_cash_commands"]' position="before">
+                <div t-if="journal_type == 'bank'">
+                    <a type="object" name="import_mapped_csv_statement">Import Mapped CSV Statement</a>
+                </div>
+            </xpath>
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="view_account_journal_form_bank_import">
+        <field name="name">account.journal.form.bank.import</field>
+        <field name="inherit_id" ref="account.view_account_journal_form"/>
+        <field name="model">account.journal</field>
+        <field name="type">form</field>
+        <field name="arch" type="xml">
+            <xpath expr="//page[@name='journal_entries']" position="after">
+                <page name="mapped_csv_import" string="Mapped CSV File Values"
+                      attrs="{'invisible': [('bank_statements_source', '!=', 'mapped_csv')]}">
+                    <group>
+                        <div class="alert alert-info" role="alert" style="margin-bottom:0px;">
+                            Just count lines and columns starting from 1 = first for line and column values
+                        </div>
+                    </group>
+                    <group string="Complete values below to configure CSV file import options">
+                        <group>
+                            <field name="bank_account_source_line"/>
+                            <field name="start_date_source_line"/>
+                            <field name="first_trans_line"/>
+                        </group>
+                        <group>
+                            <field name="bank_account_source_col"/>
+                            <field name="start_date_source_column"/>
+                            <field name="start_date_date_format"/>
+                        </group>
+                    </group>
+                    <group>
+                    <div class="alert alert-info" role="alert" style="margin-bottom:0px;">
+                        Count the first column of the import file as column sequence 0.
+                        and then increment from there
+                    </div>
+                    </group>
+                    <group attrs="{'invisible': [('type', '!=', 'bank')]}">
+
+                        <field name="account_journal_bank_imports" nolabel="1">
+                            <tree editable="bottom">
+                                <field name="column_number"/>
+                                <field name="map_to"/>
+                                <field name="ignore_if_value"/>
+                                <field name="date_format"/>
+                            </tree>
+                        </field>
+                    </group>
+                </page>
+            </xpath>
+        </field>
+    </record>
+</odoo>

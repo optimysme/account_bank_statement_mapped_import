@@ -1,0 +1,22 @@
+#
+# Files excluded from git version control
+
+#- Eclipse/Pydev Files/settings
+.idea
+.metadata
+.project
+.pydevproject
+.settings
+
+#- Python byte code
+*.py[cdo]
+__pycache__
+
+# Komodo Project Files
+*.komodo*
+
+# Lock files
+.~*
+
+# Logs
+*.log
